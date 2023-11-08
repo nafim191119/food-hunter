@@ -11,8 +11,8 @@ const FoodCard = ({item}) => {
                     <div className="divider"></div> 
                     <p className="text-white">{recipe}</p>
                     
-                    <div className="card-actions justify-end">
-                        <button className="btn btn-primary">Add to Cart</button>
+                    <div className="card-actions justify-end flex flex-col items-center">
+                        <button className="btn btn-outline border-0 border-b-4 font-bold">Add to Cart</button>
                     </div>
                 </div>
             </div>
