@@ -26,6 +26,7 @@ const NavBar = () => {
                 </div>
                 <div className="navbar-end">
                     <a className="btn"><Link to="/login">Log in</Link></a>
+                    <a className="btn"><Link to="/signup">Sign up</Link></a>
                 </div>
             </div>
         </>
