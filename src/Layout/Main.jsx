@@ -11,7 +11,6 @@ const Main = () => {
     return (
         <div>
             {isHeaderFooterLog || <NavBar></NavBar>}
-            
             <Outlet></Outlet>
             {isHeaderFooterLog || <Footer></Footer>}
             

@@ -1,19 +1,33 @@
+import { useContext } from "react";
+import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { Authcontext } from "../../Providers/AuthProvider";
 
 
 
 
 const SignUp = () => {
     const {register,handleSubmit,formState: { errors },} = useForm();
+    const {createUser} = useContext(Authcontext);
 
     const onSubmit = (data) => {
         console.log(data);
+        createUser(data.email, data.password)
+        .then(result => {
+            const loggedUser = result.user;
+            console.log(loggedUser);
+        })
     };
 
 
     return (
-        <div className="hero min-h-screen bg-base-200 px-20">
+        <div>
+            <Helmet>
+                <title>Food Hunter | Sign Up</title>
+            </Helmet>
+
+            <div className="hero min-h-screen bg-base-200 px-20">
             <div className="hero-content flex-col lg:flex-row-reverse">
                 <div className="text-center lg:text-left">
                     <h1 className="text-5xl font-bold">Sign Up now!</h1>
@@ -39,16 +53,18 @@ const SignUp = () => {
                             <label className="label">
                                 <span className="label-text">Password</span>
                             </label>
-                            <input type="password" {...register("password", { required: true }, { required: true, minlength:6, maxLength: 20 })} name="password" placeholder="password" className="input input-bordered" required />
+                            <input type="password" {...register("password", { required: true }, { required: true, minlength:6, maxLength: 20, pattern: /(?=.*[A-Z])(?=.*[!@#$*])(?=.*[0-9])(?=.*[a-z])/ })} name="password" placeholder="password" className="input input-bordered" required />
                             {errors.password && <span className="text-red-500">Password is required</span>}
+                            {errors.password?.type === 'pattern' && <span className="text-red-500">Password must have one upper, lower, number and special character</span>}
                         </div>
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary">Sign up</button>
+                            <input className="btn btn-primary" value="sign up" type="submit"/>
                         </div>
                     </form>
                     <p className='text-center mb-4 font-bold'><small>Already have an account? <Link to='/login' className='text-primary'>Click here for Login.</Link> </small></p>
                 </div>
             </div>
+        </div>
         </div>
     );
 };
