@@ -34,10 +34,12 @@ const NavBar = () => {
                     </ul>
                 </div>
                 <div className="navbar-end gap-8">
-                    <a className=""><Link to="/login">Log in</Link></a>
-                    <a className=""><Link to="/signup">Sign up</Link></a>
                     {
-                        user ? <button onClick={handleLogOut} className="btn btn-outline">Default</button> :
+                        user ?
+                            <>
+                                <button onClick={handleLogOut} className="btn btn-outline">Logout</button>
+                            </>
+                            :
                             <>
                                 <a className=""><Link to="/login">Log in</Link></a>
                                 <a className=""><Link to="/signup">Sign up</Link></a>

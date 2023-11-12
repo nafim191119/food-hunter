@@ -3,12 +3,13 @@ import { Helmet } from "react-helmet-async";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { Authcontext } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 
 
 
 
 const SignUp = () => {
-    const {register,handleSubmit,formState: { errors },} = useForm();
+    const {register,handleSubmit, reset ,formState: { errors }, updateUserProfile} = useForm();
     const {createUser} = useContext(Authcontext);
 
     const onSubmit = (data) => {
@@ -17,6 +18,22 @@ const SignUp = () => {
         .then(result => {
             const loggedUser = result.user;
             console.log(loggedUser);
+            updateUserProfile(data.name , data.photoURL)
+            .then(()=>{
+                console.log("User profile info updated")
+                reset();
+                Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "User created successfully",
+                    showConfirmButton: false,
+                    timer: 1500
+                  });
+                  Navigate('/');
+            })
+            .catch(error => {
+                console.log(error)
+            })
         })
     };
 
@@ -44,6 +61,13 @@ const SignUp = () => {
                         </div>
                         <div className="form-control">
                             <label className="label">
+                                <span className="label-text">Photo URL</span>
+                            </label>
+                            <input type="photURL" {...register("photURL", { required: true })}  name="photURL" placeholder="Photo URL" className="input input-bordered" required />
+                            {errors.photoURL && <span className="text-red-500">Photo URL  is required</span>}
+                        </div>
+                        <div className="form-control">
+                            <label className="label">
                                 <span className="label-text">Email</span>
                             </label>
                             <input type="email" {...register("email", { required: true })} name="email" placeholder="email" className="input input-bordered" required />
@@ -55,7 +79,7 @@ const SignUp = () => {
                             </label>
                             <input type="password" {...register("password", { required: true }, { required: true, minlength:6, maxLength: 20, pattern: /(?=.*[A-Z])(?=.*[!@#$*])(?=.*[0-9])(?=.*[a-z])/ })} name="password" placeholder="password" className="input input-bordered" required />
                             {errors.password && <span className="text-red-500">Password is required</span>}
-                            {errors.password?.type === 'pattern' && <span className="text-red-500">Password must have one upper, lower, number and special character</span>}
+                            {errors.password?.type === 'pattern' && <span className="text-red-500">Password must have one uppercase, lowercase, number and special character</span>}
                         </div>
                         <div className="form-control mt-6">
                             <input className="btn btn-primary" value="sign up" type="submit"/>
